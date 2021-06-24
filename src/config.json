@@ -1,6 +1,6 @@
 {
     "pancakeSwapAddress": "0x10ed43c718714eb63d5aa57b78b54704e256024e",
-    "bblAddress": "0x7D7B5E451D622f0204a3e2FeB2aF93b087AeEf5d",
     "ascAddress": "0x4197c6ef3879a08cd51e5560da5064b773aa1d29",
-    "epsAddress": "0x160CAed03795365F3A589f10C379FfA7d75d4E76"
+    "epsAddress": "0x160CAed03795365F3A589f10C379FfA7d75d4E76",
+    "bblAddress": "0x7D7B5E451D622f0204a3e2FeB2aF93b087AeEf5d"
 }

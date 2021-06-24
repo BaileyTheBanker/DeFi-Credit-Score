@@ -10,6 +10,7 @@ import {
   Panel,
   Hourglass,
   LoadingIndicator,
+  Tooltip,
 } from 'react95';
 
 const Wrapper = styled.div`
@@ -83,7 +84,7 @@ const Wrapper = styled.div`
     width: 100px;
     display: flex;
     justify-content: center;
-    margin: 25px;
+    margin: 15px;
   }
 `;
 
@@ -128,12 +129,14 @@ const ApeInCreditScoreWindow = (props) => {
             <h1 className='screen-text'>Ape into</h1>
             <h1 className='screen-text'>Credit Score</h1>
           </Panel>
-          <Panel>
-            Lorem ipsum dolor sit amet, ipsum assentior per no, an putant similique cum. Legimus eleifend assueverit ea vix, sale sadipscing id mel. Vim ex animal.
+          <Panel style={{ margin: '10px', padding: '0.5rem', lineHeight: '1.5'}}>
+            Has Ape-ing into the craziest apps allowed you access to credit? Ape in to find out.
           </Panel>
-          <Button className='apeinButton' onClick={handleClick}>
-            <h1>APE IN</h1>
-          </Button>
+          <Tooltip text='Check Credit!' enterDelay={100} leaveDelay={500}>
+            <Button className='apeinButton' onClick={handleClick}>
+              <h1>APE IN</h1>
+            </Button>
+          </Tooltip>
           {loading ? <div style={{display: 'flex'}}><p>loading...</p><Hourglass size={18}/></div> : null}
           {loading ? <LoadingIndicator isLoading/> : null}
         </WindowContent>
