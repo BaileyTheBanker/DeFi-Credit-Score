@@ -12,7 +12,7 @@ import {
   LoadingIndicator,
   Tooltip,
 } from 'react95';
-
+import AboutWindow from './AboutWindow';
 const Wrapper = styled.div`
   padding: 5rem;
   display: flex;
@@ -85,6 +85,7 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: center;
     margin: 15px;
+    font-weight: bold;
   }
 `;
 
@@ -106,6 +107,7 @@ const ApeInCreditScoreWindow = (props) => {
   return(
   <div>
     <Wrapper>
+      {props.aboutOpen ? <AboutWindow/>: null}
       <Window resizable className='window'>
         <WindowHeader className='window-header'>
           <span>Ape_Defi_CreditScore.exe</span>

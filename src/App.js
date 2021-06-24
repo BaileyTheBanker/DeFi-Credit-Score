@@ -56,7 +56,7 @@ const App = () => {
   const [window, setWindow] = useState(0);
   const [transactionHistory, setTransactionHistory] = useState(null);
   const [metaMaskAddress, setMetaMaskAddress] = useState(null);
-  
+  const [aboutOpen, setAboutopen] = useState(false);
   
   useEffect(() => {
     const connectEagerlyMetamask = async () => {
@@ -112,11 +112,11 @@ const App = () => {
           </Button>
           <Bar size={35} />
           <Button style={{ fontWeight: 'bold' }} onClick={handleConnectMetamask}>Connect</Button>
-          <Button style={{ fontWeight: 'bold' }}>About</Button>
+          <Button style={{ fontWeight: 'bold' }} onClick={() => setAboutopen(!aboutOpen)}>About</Button>
           <Bar size={35} />
           </div>
     </AppBar>
-        {window === 0 ? <ApeInCreditScoreWindow metaMaskAddress={metaMaskAddress} setWindow={setWindow} setTransactionHistory={setTransactionHistory} web3={web3}/>
+        {window === 0 ? <ApeInCreditScoreWindow aboutOpen={aboutOpen} metaMaskAddress={metaMaskAddress} setWindow={setWindow} setTransactionHistory={setTransactionHistory} web3={web3}/>
          : <TransactionsWindow metaMaskAddress={metaMaskAddress} transactionHistory={getTransactionHistory} web3={web3}/>}
       </Background>
     </ThemeProvider>
