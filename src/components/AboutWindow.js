@@ -10,7 +10,6 @@ import {
   import styled from 'styled-components';
 
   const Wrapper = styled.div`
-  padding: 5rem;
   display: flex;
   justify-content: center;
   .window-header {

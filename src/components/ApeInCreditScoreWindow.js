@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import myGif from '../assets/stars.gif';
+import BBLLogo from '../assets/LogoSized.png'
 import styled from 'styled-components';
 import { 
   Window,
@@ -65,6 +66,9 @@ const Wrapper = styled.div`
     align-items: center;
   }
   .screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 350px;
     height:250px;
     margin: 10px;
@@ -128,8 +132,7 @@ const ApeInCreditScoreWindow = (props) => {
         </Toolbar>
         <WindowContent className='window-content'>
           <Panel variant='well' className='screen'>
-            <h1 className='screen-text'>Ape into</h1>
-            <h1 className='screen-text'>Credit Score</h1>
+            <img src={BBLLogo} width={150} heigh={150}></img>
           </Panel>
           <Panel style={{ margin: '10px', padding: '0.5rem', lineHeight: '1.5'}}>
             Has Ape-ing into the craziest apps allowed you access to credit? Ape in to find out.

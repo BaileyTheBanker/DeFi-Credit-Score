@@ -4,6 +4,8 @@ import configData from '../config.json';
 import pancakeswapLogo from '../assets/pancakeswapLogo.png';
 import acryptosLogo from '../assets/acryptosLogo.png';
 import ellipsisLogo from '../assets/ellipsisLogo.png';
+import BBLLogo from '../assets/LogoSized.png';
+import AboutWindow from '../components/AboutWindow';
 import { 
   Window,
   WindowContent,
@@ -19,27 +21,76 @@ import {
   Checkbox,
   Avatar,
   Panel,
-  NumberField,
+  Toolbar,
+  Button,
 } from 'react95';
 
-const Wraper = styled.div`
-    padding: 5rem;
-    display: flex;
-    justify-content: center;
+const Wrapper = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+margin: 32px;
+.window-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.close-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-left: -1px;
+  margin-top: -1px;
+  transform: rotateZ(45deg);
+  position: relative;
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    background: ___CSS_0___;
+  }
+  &:before {
+    height: 100%;
+    width: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  &:after {
+    height: 3px;
+    width: 100%;
+    left: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+.window {
+  margin: 25px;
+  z-index: 1;
+}
+.window:nth-child(2) {
+  margin: 2rem;
+}
+.window-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
 
-    .exchangeCheckbox {
-        display: flex;
-        align-items: center;
-        margin: 25px;
-    }
-    .exchangeLogo {
-        margin: 5px;
-    }
+.exchangeCheckbox {
+    display: flex;
+    align-items: center;
+    margin: 25px;
+}
+.exchangeLogo {
+    margin: 5px;
+}
 `;
+
 const TransactionsWindow = (props) => {
     let transactionsWithWantedAddresses = [];
     const exchanges = ['pancakeSwap', 'Acryptos', 'Ellipsis', 'BBL'];
-    const exchangeLogo = [pancakeswapLogo, acryptosLogo, ellipsisLogo]
+    const exchangeLogo = [pancakeswapLogo, acryptosLogo, ellipsisLogo, BBLLogo]
     const [hasInteractedWithWantedAddress, setHasInteractedWithWantedAddress] = useState([]);
 
     try{
@@ -61,16 +112,45 @@ const TransactionsWindow = (props) => {
         console.log(error);
     }
     return (
-        <div>
-            <Wraper>
-                <Window>
-                    <WindowContent>
-                        <Fieldset label='Your address'>
-                            {props.metaMaskAddress}
-                        </Fieldset>
-                        <br/>
-                        {transactionsWithWantedAddresses.length === 0 ? <Fieldset label='Notice!'>you have no transactions of interest</Fieldset> : null}
-                        <br/>
+        <div style={{display: 'flex', flexDirection: 'column'}}>
+            <Wrapper>
+            <div>
+                {transactionsWithWantedAddresses.length === 0 ?
+                <Window style={{width: '350px'}}>
+                    <WindowHeader className='window-header'>
+                        Notification_Center.exe
+                        <Button>
+                            <span className='close-icon' />
+                        </Button>
+                    </WindowHeader>
+                    <WindowContent className='window-content'>
+                        <Fieldset label='Notice!'>you have no transactions of interest</Fieldset>
+                        {props.metaMaskAddress ? null : <Fieldset label='Notice!'>your MetaMask Wallet is not connected, please try again</Fieldset>}
+                    </WindowContent>
+                </Window>
+                :
+                null}
+                {props.aboutOpen ? <AboutWindow/>: null}
+            </div>
+                <Window className='window'>
+                    <WindowHeader className='window-header'>
+                        Info.exe
+                        <Button>
+                            <span className='close-icon' />
+                        </Button>
+                    </WindowHeader>
+                    <Toolbar>
+                        <Button variant='menu' size='sm'>
+                            File
+                        </Button>
+                        <Button variant='menu' size='sm'>
+                            Edit
+                        </Button>
+                        <Button variant='menu' size='sm' disabled>
+                            Save
+                        </Button>
+                    </Toolbar>
+                    <WindowContent className='window-content'>
                         <Panel shadow style={{ padding: '0.5rem', lineHeight: '1.5'}}>
                         <Panel variant='well' style={{ margin: '10px', padding: '0.5rem', lineHeight: '1.5'}}>If you want a line of credit, these should look familiar:</Panel>
                             <br/>
@@ -100,7 +180,7 @@ const TransactionsWindow = (props) => {
                         <br/>
                         <Panel shadow style={{ display: 'flex',  margin: '10px', padding: '0.5rem', lineHeight: '1.5'}}>
                             <Avatar square size={50} className='exchangeLogo'>
-
+                                <img src={BBLLogo} width={32} height={32}/>
                             </Avatar>
                             <div>
                                 BBL dues paid:
@@ -108,9 +188,14 @@ const TransactionsWindow = (props) => {
                             </div>
                         </Panel>
                     </WindowContent>
-                </Window>
-                <Window style={{}}>
-                    <WindowHeader>Transactions.exe</WindowHeader>
+                </Window >
+                <Window style={{maxHeight: '700px'}}>
+                    <WindowHeader className='window-header'>
+                        Transactions.exe
+                        <Button>
+                            <span className='close-icon' />
+                        </Button>
+                    </WindowHeader>
                     <WindowContent>
                     <Cutout style={{ height: 600 }}>
                     <Table>
@@ -137,7 +222,7 @@ const TransactionsWindow = (props) => {
                     </Cutout>
                     </WindowContent>
                 </Window>
-            </Wraper>
+            </Wrapper>
         </div>
     )
 };
