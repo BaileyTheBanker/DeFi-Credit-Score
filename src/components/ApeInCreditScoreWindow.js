@@ -96,17 +96,17 @@ const Wrapper = styled.div`
 const ApeInCreditScoreWindow = (props) => {
   const [loading, setLoading] = useState(false);
   const handleClick = () => {
-    setLoading(true);
-    let metaMaskAddress;
-    props.web3.eth.getAccounts().then(res => {metaMaskAddress = res[0]}).then(() => {
-      fetch(`https://api.bscscan.com/api?module=account&action=txlist&address=${metaMaskAddress}&startblock=1&endblock=99999999&sort=asc&apikey=95ISRBPUWI8RU2DE9QJIVPEXHAADXH46EV`)
+    if(props.metaMaskAddress){
+      setLoading(true);
+      fetch(`https://api.bscscan.com/api?module=account&action=txlist&address=${props.metaMaskAddress}&startblock=1&endblock=99999999&sort=asc&apikey=95ISRBPUWI8RU2DE9QJIVPEXHAADXH46EV`)
       .then(res => res.json())
       .then(data => {
         props.setTransactionHistory(data.result);
         props.setWindow(1);
-      })
+      });
+    } else {
+      alert('you have to connect your wallet in order to APE IN');
     }
-    );
   }
   return(
   <div>

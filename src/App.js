@@ -20,7 +20,8 @@ import original from "react95/dist/themes/original";
 import ms_sans_serif from "react95/dist/fonts/ms_sans_serif.woff2";
 import ms_sans_serif_bold from "react95/dist/fonts/ms_sans_serif_bold.woff2";
 
-import { connectMetamask, eagerlyConnectMetamask, getWeb3 } from 'eth-wallet-connector'
+import detectEthereumProvider from '@metamask/detect-provider'
+
 import Web3 from 'web3';
 
 
@@ -68,44 +69,43 @@ const BBLHomeApp = styled.div`
 `;
 
 const App = () => {
-  let web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
   const [window, setWindow] = useState(0);
   const [transactionHistory, setTransactionHistory] = useState(null);
   const [metaMaskAddress, setMetaMaskAddress] = useState(null);
+  const [web3, setWeb3] = useState(null);
   const [aboutOpen, setAboutopen] = useState(false);
-  
-  useEffect(() => {
-    const connectEagerlyMetamask = async () => {
-      const result = await eagerlyConnectMetamask();
 
-      if (result) {
-        // connected
-
-        web3 = getWeb3(); // this retrieves the web3 instance from the wallet
-
-        const accounts = await web3.eth.getAccounts();
-        setMetaMaskAddress(accounts[0]);
-        console.log(accounts);
-      }
+  const initWeb3 = async () => {
+    console.log("[web3] getting provider...");
+    const provider = await detectEthereumProvider()
+    if (provider) {
+      console.log('Ethereum successfully detected!');
+    }else {
+        alert("You have to use Trustwallet app or install Metamask extension in your browser to use this app, you can install it from :  https://metamask.io");
+        return;
     }
+    
+    let web3 = new Web3(provider);
 
-    connectEagerlyMetamask();
-  }, [])
-
-  const handleConnectMetamask = async () => {
-    const result = await connectMetamask();
-
-    if (result) {
-      // connected
-
-      web3 = getWeb3(); // this retrieves the web3 instance from the wallet
-
-      const accounts = await web3.eth.getAccounts();
-      setMetaMaskAddress(accounts[0]);
-      console.log(accounts);
-    }
+    console.log("[web3] got provider!");
+    //set state
+    setWeb3(web3);
+    console.log(web3);
   }
 
+  const connectWallet = async () => {
+    // Set default account 
+    let accounts = await web3.givenProvider.request({ method: 'eth_requestAccounts' });
+    setMetaMaskAddress(accounts[0]);
+  }
+
+  useEffect(() => {
+    initWeb3();
+  },[]);
+
+  const handleConnect = async () => {
+    connectWallet();
+  }
   const getTransactionHistory = () => {
     return transactionHistory;
   }
@@ -131,7 +131,7 @@ const App = () => {
           </Tooltip>
           <Bar size={35} />
           <Button style={{ fontWeight: 'bold' }} onClick={() => setAboutopen(!aboutOpen)}>About</Button>
-          {metaMaskAddress ? <Panel variant='well' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{metaMaskAddress}</Panel> : <Button style={{ fontWeight: 'bold' }} onClick={handleConnectMetamask}>Connect</Button>}
+          {metaMaskAddress ? <Panel variant='well' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{metaMaskAddress}</Panel> : <Button style={{ fontWeight: 'bold' }} onClick={handleConnect}>Connect</Button>}
           <Bar size={35} />
           </div>
       </AppBar>
